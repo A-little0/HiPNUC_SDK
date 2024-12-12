@@ -210,7 +210,7 @@ void USART1_IRQHandler(void)
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
-  IDLE_IMU_Handler();
+  HiPNUC_IDLE_Handle(&huart1, &hdma_usart1_rx, &hipnuc);
   /* USER CODE END USART1_IRQn 1 */
 }
 

@@ -91,7 +91,7 @@ int main(void)
   MX_DMA_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  hipnuc_Init();
+  HiPNUC_DMA_Init(&huart1, &hipnuc);;
   /* USER CODE END 2 */
 
   /* Infinite loop */

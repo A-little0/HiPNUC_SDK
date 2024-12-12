@@ -19,6 +19,7 @@ extern "C" {
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include "usart.h"
 
 #ifdef QT_CORE_LIB
 #pragma pack(push)
@@ -138,7 +139,7 @@ typedef struct
  * @param data Input byte to process
  * @return int 1 if a complete packet was successfully decoded, 0 if more data is needed, -1 on error
  */
-int hipnuc_input(hipnuc_raw_t *raw, uint8_t data);
+//int hipnuc_input(hipnuc_raw_t *raw, uint8_t data);
 
 /**
  * @brief Dump decoded HiPNUC packet data to a string buffer
@@ -149,6 +150,10 @@ int hipnuc_input(hipnuc_raw_t *raw, uint8_t data);
  * @return int Number of characters written to the buffer
  */
 int hipnuc_dump_packet(hipnuc_raw_t *raw, char *buf, size_t buf_size);
+
+void HiPNUC_DMA_Init(UART_HandleTypeDef* huart,hipnuc_raw_t *hipnuc_raw);
+void HiPNUC_IDLE_Handle(UART_HandleTypeDef* huart, DMA_HandleTypeDef* hdma,hipnuc_raw_t *hipnuc_raw);
+void HiPNUC_Process(hipnuc_raw_t *hipnuc_raw);
 
 #ifdef __cplusplus
 }

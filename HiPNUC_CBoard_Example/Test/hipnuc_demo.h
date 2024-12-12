@@ -4,7 +4,8 @@
 #include "usart.h"
 #include "hipnuc_dec.h"
 
-void hipnuc_Init(void);
+//void hipnuc_Init(void);
 
-void IDLE_IMU_Handler(void);
+//void IDLE_IMU_Handler(void);
+extern hipnuc_raw_t hipnuc;
 #endif

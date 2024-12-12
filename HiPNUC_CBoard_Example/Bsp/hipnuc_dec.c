@@ -48,15 +48,14 @@ static void hipnuc_crc16(uint16_t *inital, const uint8_t *buf, uint32_t len);
 
 /* common type conversion */
 #define I2(p) (*((int16_t *)(p)))
-//
-uint16_t U2(uint8_t *p)
+static uint16_t U2(uint8_t *p)
 {
     uint16_t u;
     memcpy(&u, p, 2);
     return u;
 }
 
-float R4(uint8_t *p)
+static float R4(uint8_t *p)
 {
     float r;
     memcpy(&r, p, 4);
@@ -144,8 +143,7 @@ static int parse_data(hipnuc_raw_t *raw)
     return 1;
 }
 
-//
-int decode_hipnuc(hipnuc_raw_t *raw)
+static int decode_hipnuc(hipnuc_raw_t *raw)
 {
     uint16_t crc = 0;
 
@@ -208,6 +206,15 @@ int hipnuc_input(hipnuc_raw_t *raw, uint8_t data)
 
     return decode_hipnuc(raw);
 }
+
+
+/**
+ * @brief     HiPNUC decoder input, read one byte at a time.
+ *
+ * @param    raw is the decoder struct.
+ * @param    data is the one byte read from stream.
+ * @return   >0: decoder received a frame successfully, else: receiver did not receive a frame successfully.
+ */
 
 
 /**
@@ -420,4 +427,49 @@ static void hipnuc_crc16(uint16_t *inital, const uint8_t *buf, uint32_t len)
         }
     } 
     *inital = crc;
+}
+
+
+void HiPNUC_DMA_Init(UART_HandleTypeDef* huart,hipnuc_raw_t *hipnuc_raw)
+{
+	/*初始化hipnuc_raw句柄*/
+	hipnuc_raw->nbyte = 0;
+	hipnuc_raw->len = 0;
+	for(int i = 0; i < (sizeof(hipnuc_raw->buf)/hipnuc_raw->buf[0]); i++){
+		hipnuc_raw->buf[i] = 0;
+	}
+	/*开启dma空闲中断接收*/
+    __HAL_UART_CLEAR_IDLEFLAG(huart);
+    __HAL_UART_ENABLE_IT(huart, UART_IT_IDLE);
+    HAL_UART_Receive_DMA(huart, hipnuc_raw->buf, HIPNUC_MAX_RAW_SIZE);
+}
+
+
+void HiPNUC_Process(hipnuc_raw_t *hipnuc_raw)
+{
+	
+    decode_hipnuc(hipnuc_raw);
+}
+
+
+void HiPNUC_IDLE_Handle(UART_HandleTypeDef* huart, DMA_HandleTypeDef* hdmarx,hipnuc_raw_t *hipnuc_raw)
+{
+	int32_t Data_lave,Data_exist; 
+	if((__HAL_UART_GET_FLAG(huart,UART_FLAG_IDLE)!= RESET))//判断串口dma接收是否处于空闲状态
+	{
+		__HAL_UART_CLEAR_IDLEFLAG(huart);//清除DMA空闲中断标志位
+		
+		HAL_UART_DMAStop(huart); //停止串口dma接收
+		
+		Data_lave = __HAL_DMA_GET_COUNTER(hdmarx); //获取接收长度
+		Data_exist = HIPNUC_MAX_RAW_SIZE - Data_lave; //计算剩余长度
+
+		hipnuc_raw->len = U2(hipnuc_raw->buf + 2); //解析包内数据长度
+		if(Data_exist >= 0 )  //判断是否接收到正确长度数据
+		{
+			/*接收成功后，处理相应接收数据*/
+			HiPNUC_Process(hipnuc_raw);
+		}
+		HAL_UART_Receive_DMA(huart, hipnuc_raw->buf, HIPNUC_MAX_RAW_SIZE);//重新启动dma接收	
+	}
 }
