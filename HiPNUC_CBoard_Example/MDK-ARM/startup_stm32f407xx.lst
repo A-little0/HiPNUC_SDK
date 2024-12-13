@@ -849,11 +849,11 @@ erwork --depend=hipnuc_cboard_example\startup_stm32f407xx.d -ohipnuc_cboard_exa
 ARM Macro Assembler    Page 14 
 
 
-mple\startup_stm32f407xx.o -I.\RTE\_HiPNUC_CBoard_Example -ID:\Keil_v5\ARM\PACK
-\ARM\CMSIS\5.0.1\CMSIS\Include -ID:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.16.0\
-Drivers\CMSIS\Device\ST\STM32F4xx\Include --predefine="__UVISION_VERSION SETA 5
-24" --predefine="_RTE_ SETA 1" --predefine="STM32F407xx SETA 1" --list=startup_
-stm32f407xx.lst startup_stm32f407xx.s
+mple\startup_stm32f407xx.o -I../Core/Inc -I.\RTE\_HiPNUC_CBoard_Example -ID:\Ke
+il_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include -ID:\Keil_v5\ARM\PACK\Keil\STM32F4
+xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include --predefine="__UVISION_
+VERSION SETA 524" --predefine="_RTE_ SETA 1" --predefine="STM32F407xx SETA 1" -
+-list=startup_stm32f407xx.lst startup_stm32f407xx.s
 
 
 

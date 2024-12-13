@@ -27,4 +27,6 @@ hipnuc_cboard_example\stm32f4xx_hal_gpio.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/
 hipnuc_cboard_example\stm32f4xx_hal_gpio.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
 hipnuc_cboard_example\stm32f4xx_hal_gpio.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 hipnuc_cboard_example\stm32f4xx_hal_gpio.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+hipnuc_cboard_example\stm32f4xx_hal_gpio.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
+hipnuc_cboard_example\stm32f4xx_hal_gpio.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 hipnuc_cboard_example\stm32f4xx_hal_gpio.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
